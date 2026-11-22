@@ -1,0 +1,39 @@
+CREATE TABLE healthRecord (
+  id TEXT NOT NULL PRIMARY KEY, kind TEXT NOT NULL, title TEXT NOT NULL, detail TEXT NOT NULL,
+  times TEXT NOT NULL, start TEXT NOT NULL, end TEXT NOT NULL, place TEXT NOT NULL,
+  level TEXT NOT NULL, reminderMinutes INTEGER NOT NULL, dayBefore INTEGER NOT NULL,
+  archived INTEGER NOT NULL, stockRemaining INTEGER, unitsPerDose INTEGER NOT NULL,
+  stockAlertAt INTEGER NOT NULL, stockTotal INTEGER, foodItems TEXT NOT NULL
+);
+
+selectRecords:
+SELECT * FROM healthRecord ORDER BY start, title;
+
+upsertRecord:
+INSERT OR REPLACE INTO healthRecord VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+archiveRecord:
+UPDATE healthRecord SET archived = 1 WHERE id = ?;
+
+CREATE TABLE completion (
+  recordId TEXT NOT NULL, occurrence TEXT NOT NULL, status TEXT NOT NULL, at INTEGER NOT NULL,
+  PRIMARY KEY (recordId, occurrence)
+);
+
+selectCompletions:
+SELECT * FROM completion ORDER BY at;
+
+insertCompletion:
+INSERT OR IGNORE INTO completion VALUES (?, ?, ?, ?);
+
+CREATE TABLE user_profile (
+  id INTEGER NOT NULL PRIMARY KEY CHECK (id = 1), name TEXT NOT NULL, age TEXT NOT NULL,
+  weight TEXT NOT NULL, blood TEXT NOT NULL, allergies TEXT NOT NULL, contact TEXT NOT NULL,
+  phone TEXT NOT NULL, notifications INTEGER NOT NULL
+);
+
+selectProfile:
+SELECT * FROM user_profile WHERE id = 1;
+
+upsertProfile:
+INSERT OR REPLACE INTO user_profile VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?);
